@@ -16,8 +16,8 @@ class _NavigationState extends State<Navigation> {
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
     Top(),
+    Reservations(),
     Profile(),
-    Reservations()
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -36,7 +36,7 @@ class _NavigationState extends State<Navigation> {
             label: 'Inicio',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.start),
+            icon: Icon(Icons.star),
             label: 'Top 5',
           ),
           BottomNavigationBarItem(
