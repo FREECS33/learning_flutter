@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_b/modules/auth/screens/login.dart';
 import 'package:learning_b/navigation/home.dart';
 import 'package:learning_b/navigation/navigation.dart';
 import 'package:learning_b/navigation/profile.dart';
@@ -20,6 +21,7 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/':(context) =>  const SplashScreen(),
+        '/login': (context) => const Login(),
         '/menu':(context) =>  const Navigation(),
         '/home':(context) => const Home(),
         '/top':(context) => const Top(),
