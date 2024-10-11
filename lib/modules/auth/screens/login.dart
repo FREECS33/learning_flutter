@@ -12,6 +12,21 @@ class _LoginState extends State<Login> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isObscure = true;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? validateEmail(String? value) {
+    final RegExp emailRegExp = RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    );
+
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese su correo electrónico';
+    } else if (!emailRegExp.hasMatch(value)) {
+      return 'Por favor, ingrese un correo electrónico válido';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,60 +39,68 @@ class _LoginState extends State<Login> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/fox.png",
-                width: 200,
-                height: 200,
-              ),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  hintText: "Correo electrónico",
-                  label: Text("Correo electrónico"),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/fox.png",
+                  width: 200,
+                  height: 200,
                 ),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextField(
-                controller: _passwordController,
-                obscureText: _isObscure,
-                decoration: InputDecoration(
-                  hintText: "Contraseña",
-                  label: const Text("Contraseña"),
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isObscure = !_isObscure;
-                        });
-                      },
-                      icon: Icon(_isObscure
-                          ? Icons.visibility
-                          : Icons.visibility_off)),
+                TextFormField(
+                  validator: validateEmail,
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    hintText: "Correo electrónico",
+                    label: Text("Correo electrónico"),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
                 ),
-              ),
-              const SizedBox(
-                height: 48,
-              ),
-              SizedBox(
-                height: 48,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () =>
-                      print("Datos => $_emailController $_passwordController"),
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.cyan[200],
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16))),
-                  child: const Text("Iniciar Sesión"),
+                const SizedBox(
+                  height: 16,
                 ),
-              )
-            ],
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: _isObscure,
+                  decoration: InputDecoration(
+                    hintText: "Contraseña",
+                    label: const Text("Contraseña"),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
+                        icon: Icon(_isObscure
+                            ? Icons.visibility
+                            : Icons.visibility_off)),
+                  ),
+                ),
+                const SizedBox(
+                  height: 48,
+                ),
+                SizedBox(
+                  height: 48,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        print(
+                        "Datos => ${_emailController.text} ${_passwordController.text}")
+                      }
+                    },
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.cyan[200],
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16))),
+                    child: const Text("Iniciar Sesión"),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
