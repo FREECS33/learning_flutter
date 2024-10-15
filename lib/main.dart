@@ -30,6 +30,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         '/login': (context) => const Login(),
+        'register': (context) => const CreateAccount(),
         '/menu': (context) => const Navigation(),
         '/home': (context) => const Home(),
         '/top': (context) => const Top(),

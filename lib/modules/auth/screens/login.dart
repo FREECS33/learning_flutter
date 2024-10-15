@@ -6,6 +6,13 @@ class Login extends StatefulWidget {
 
   @override
   State<Login> createState() => _LoginState();
+  FirebaseAuth.instance
+    .authStateChanges()
+    .listen(User? user) {
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, '/menu');
+      }
+    }
 }
 
 class _LoginState extends State<Login> {
@@ -113,6 +120,13 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(16))),
                     child: const Text("Iniciar Sesión"),
                   ),
+                ),
+                SizedBox(
+                  height: 16
+                ),
+                InkWell(
+                  onTap: () => Navigator.pushNamed(context, '/register'),
+                  child: const Text("Registrarse", style: TextStyle(color: Colors.blue)),
                 )
               ],
             ),
