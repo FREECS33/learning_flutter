@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
       .authStateChanges()
       .listen((User? user) {
         if (user != null) {
-          Navigator.pushReplacementNamed(context, '/menu')
+          Navigator.pushReplacementNamed(context, '/menu');
         } else  {
           Navigator.pushReplacementNamed(context, '/login');
         }
