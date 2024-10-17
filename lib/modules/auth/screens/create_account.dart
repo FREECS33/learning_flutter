@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:learning_b/widgets/text_field_password.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -10,6 +12,8 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,47 @@ class _CreateAccountState extends State<CreateAccount> {
                               label: Text("Correo electrónico")),
                           keyboardType: TextInputType.emailAddress,
                           controller: _email,
+                        ),
+                        TextFieldPassword(
+                          controller: _password,
+                        ),
+                        TextFieldPassword(
+                          controller: _confirmPassword,
+                          hintText: "Confirmar contraseña",
+                          labelText: "Confirmar contraseña",
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    final credential = await FirebaseAuth
+                                        .instance
+                                        .createUserWithEmailAndPassword(
+                                      email: _email.text,
+                                      password: _password.text,
+                                    );
+                                    print("Credencial => $credential");
+                                  } on FirebaseAuthException catch (e) {
+                                    if (e.code == 'weak-password') {
+                                      print(
+                                          'The password provided is too weak.');
+                                    } else if (e.code ==
+                                        'email-already-in-use') {
+                                      print(
+                                          'The account already exists for that email.');
+                                    }
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                }
+                              },
+                              child: Text("Crear cuenta")),
                         )
                       ],
                     ))

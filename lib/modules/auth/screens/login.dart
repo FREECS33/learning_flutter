@@ -90,16 +90,16 @@ class _LoginState extends State<Login> {
                       if (_formKey.currentState!.validate()) {
                         try {
                           final credential = await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
+                              .signInWithEmailAndPassword(
                             email: _emailController.text,
                             password: _passwordController.text,
                           );
                           print("Credencial => $credential");
                         } on FirebaseAuthException catch (e) {
-                          if (e.code == 'weak-password') {
-                            print('The password provided is too weak.');
-                          } else if (e.code == 'email-already-in-use') {
-                            print('The account already exists for that email.');
+                          if (e.code == 'user-not-found') {
+                            print('No user found for the email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Incorret password.');
                           }
                         } catch (e) {
                           print(e);
